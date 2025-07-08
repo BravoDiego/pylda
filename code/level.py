@@ -49,13 +49,13 @@ class Level:
                             surf = graphics['objects'][int(col)]
                             Tile((x, y), [self.visible_sprites, self.obstacles_sprites], 'object', surf)
 
-        self.player = Player((2000, 1430), [self.visible_sprites], self.obstacles_sprites)
+        self.player = Player((2000, 1400), [self.visible_sprites], self.obstacles_sprites)
         
     def run(self):
         # update and draw the game
         self.visible_sprites.custom_draw(self.player)
         self.visible_sprites.update()
-        debug(self.player.direction)  # Debugging player position
+        debug(self.player.status)  # Debugging player position
 
 class YSortCameraGroup(pygame.sprite.Group):
     def __init__(self):
