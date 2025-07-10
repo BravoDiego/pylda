@@ -57,10 +57,33 @@ class Level:
                             surf = graphics['objects'][int(col)]
                             Tile((x, y), [self.visible_sprites, self.obstacles_sprites], 'object', surf)
 
-        self.player = Player((2000, 1400), [self.visible_sprites], self.obstacles_sprites, self.create_attack, self.destroy_attack)
+        self.player = Player(
+            (2000, 1400), 
+            [self.visible_sprites], 
+            self.obstacles_sprites, 
+            self.create_attack, 
+            self.destroy_attack,
+            self.create_magic,
+        )
         
     def create_attack(self):
         self.current_attack = Weapon(self.player, [self.visible_sprites])
+    
+    def create_magic(self, style, strength, cost):
+        print(f'Creating magic of style: {style}, strength: {strength}, cost: {cost}')
+        if style == 'flame':
+            print('Flame magic created')
+            # Here you would create the flame magic sprite
+            # For example:
+            # FlameMagic(self.player, [self.visible_sprites], strength, cost)
+        elif style == 'heal':
+            print('Heal magic created')
+            # Here you would create the heal magic sprite
+            # For example:
+            # HealMagic(self.player, [self.visible_sprites], strength, cost)
+        else:
+            print('Unknown magic style')
+
     
     def destroy_attack(self):
         if self.current_attack:
