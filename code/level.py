@@ -7,6 +7,7 @@ from enemy import Enemy
 from particles import AnimationPlayer
 from magic import MagicPlayer
 from ui import UI
+from upgrade import Upgrade
 from debug import debug
 from support import *
 from random import choice, randint
@@ -15,6 +16,7 @@ class Level:
     def __init__(self):
         # get the display surface
         self.display_surface = pygame.display.get_surface()
+        self.game_paused = False
 
         # sprite groupe setup
         self.visible_sprites = YSortCameraGroup()
@@ -30,6 +32,7 @@ class Level:
 
         # user interface
         self.ui = UI()
+        self.upgrade = Upgrade(self.player)
 
         # particles
         self.animation_player = AnimationPlayer()
@@ -96,6 +99,7 @@ class Level:
                                     self.obstacles_sprites,
                                     self.damage_player,
                                     self.trigger_death_particles,
+                                    self.add_xp
                                 )
         
     def create_attack(self):
@@ -144,13 +148,23 @@ class Level:
     def trigger_death_particles(self, pos, particle_type):
         self.animation_player.create_particles(particle_type, pos, [self.visible_sprites])
 
+    def add_xp(self, amount):
+        self.player.exp += amount
+
+    def toggle_menu(self):
+        self.game_paused = not self.game_paused
+
     def run(self):
-        # update and draw the game
         self.visible_sprites.custom_draw(self.player)
-        self.visible_sprites.update()
-        self.visible_sprites.enemy_update(self.player)
-        self.player_attack_logic()
+        # update and draw the game
         self.ui.display(self.player)
+        
+        if self.game_paused:
+            self.upgrade.display()
+        else:
+            self.visible_sprites.update()
+            self.visible_sprites.enemy_update(self.player)
+            self.player_attack_logic()
 
 class YSortCameraGroup(pygame.sprite.Group):
     def __init__(self):
