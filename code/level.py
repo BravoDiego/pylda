@@ -5,6 +5,7 @@ from player import Player
 from weapon import Weapon
 from enemy import Enemy
 from particles import AnimationPlayer
+from magic import MagicPlayer
 from ui import UI
 from debug import debug
 from support import *
@@ -32,6 +33,7 @@ class Level:
 
         # particles
         self.animation_player = AnimationPlayer()
+        self.magic_player = MagicPlayer(self.animation_player)
 
     def create_map(self):
         # create the map, load tiles and player
@@ -100,17 +102,13 @@ class Level:
         self.current_attack = Weapon(self.player, [self.visible_sprites, self.attack_sprites])
     
     def create_magic(self, style, strength, cost):
-        print(f'Creating magic of style: {style}, strength: {strength}, cost: {cost}')
         if style == 'flame':
-            print('Flame magic created')
+            self.magic_player.flame(self.player, cost, [self.visible_sprites, self.attack_sprites])
             # Here you would create the flame magic sprite
             # For example:
             # FlameMagic(self.player, [self.visible_sprites], strength, cost)
         elif style == 'heal':
-            print('Heal magic created')
-            # Here you would create the heal magic sprite
-            # For example:
-            # HealMagic(self.player, [self.visible_sprites], strength, cost)
+            self.magic_player.heal(self.player, strength, cost, [self.visible_sprites])
         else:
             print('Unknown magic style')
 

@@ -187,9 +187,20 @@ class Player(Entity):
         # calculate the full weapon damage considering player's stats and resistance
         return weapon_data[self.weapon]['damage'] + self.stats['attack']
 
+    def get_full_magic_damage(self) -> int:
+        # calculate the full magic damage considering player's stats and resistance
+        return magic_data[self.magic]['strength'] + self.stats['magic']
+    
+    def energy_recovery(self):
+        if self.energy < self.stats['energy']:
+            self.energy += 0.01 * self.stats['magic']  # recover energy over time
+            if self.energy > self.stats['energy']:
+                self.energy = self.stats['energy']
+
     def update(self):
         self.input()
         self.cooldowns()
         self.get_status()
         self.animate()
         self.move(self.speed)
+        self.energy_recovery()
