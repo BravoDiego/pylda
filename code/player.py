@@ -73,8 +73,6 @@ class Player(Entity):
         for animation in self.animations.keys():
             full_path = character_path + animation
             self.animations[animation] = import_folder(full_path)
-
-        print(self.animations)
     
     def input(self):
         if not self.attacking:  # only process input if not attacking
@@ -184,7 +182,6 @@ class Player(Entity):
             self.image.set_alpha(alpha)
         else:
             self.image.set_alpha(255)
-
     
     def get_full_weapon_damage(self) -> int:
         # calculate the full weapon damage considering player's stats and resistance

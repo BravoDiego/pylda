@@ -4,10 +4,11 @@ from tile import Tile
 from player import Player
 from weapon import Weapon
 from enemy import Enemy
+from particles import AnimationPlayer
 from ui import UI
 from debug import debug
 from support import *
-from random import choice
+from random import choice, randint
 
 class Level:
     def __init__(self):
@@ -28,6 +29,9 @@ class Level:
 
         # user interface
         self.ui = UI()
+
+        # particles
+        self.animation_player = AnimationPlayer()
 
     def create_map(self):
         # create the map, load tiles and player
@@ -88,7 +92,8 @@ class Level:
                                     (x, y), 
                                     [self.visible_sprites, self.attackable_sprites], 
                                     self.obstacles_sprites,
-                                    self.damage_player
+                                    self.damage_player,
+                                    self.trigger_death_particles,
                                 )
         
     def create_attack(self):
@@ -122,6 +127,10 @@ class Level:
                 if hit_sprites:
                     for target in hit_sprites:
                         if target.sprite_type == 'grass':
+                            pos = target.rect.center
+                            offset = pygame.math.Vector2(0, 75)
+                            for _ in range(randint(3, 6)):
+                                self.animation_player.create_grass_particles(pos - offset, [self.visible_sprites])
                             target.kill()
                         
                         else:
@@ -132,8 +141,11 @@ class Level:
             self.player.health -= amount
             self.player.vulnerable = False
             self.player.hurt_time = pygame.time.get_ticks()
+            self.animation_player.create_particles(attack_type, self.player.rect.center, [self.visible_sprites])
             
-                         
+    def trigger_death_particles(self, pos, particle_type):
+        self.animation_player.create_particles(particle_type, pos, [self.visible_sprites])
+
     def run(self):
         # update and draw the game
         self.visible_sprites.custom_draw(self.player)
