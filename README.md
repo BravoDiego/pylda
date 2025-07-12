@@ -1,6 +1,6 @@
 # 🗡️ Pylda - Mini Zelda in Python
 <div style="text-align: center;">
-    <img src="./graphics/menu/logo.png" alt="Texte alternatif" width="300" />
+    <img src="./graphics/menu/logo.png" alt="Texte alternatif" width="300" style="display: block; margin: auto; width: 300px;" />
 </div>
 **Pylda** is a mini adventure game project inspired by *The Legend of Zelda*, built using **Python** and **Pygame**.
 
