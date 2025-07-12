@@ -208,9 +208,6 @@ class Player(Entity):
 
     def get_full_magic_damage(self) -> int:
         # calculate the full magic damage considering player's stats and resistance
-        print(self.magic)
-        print(magic_data[self.magic])
-        print(magic_data[self.magic]['strength'] )
         return magic_data[self.magic]['strength'] + self.stats['magic']
     
     def get_value_by_index(self, index) -> int:
